@@ -1,0 +1,6 @@
+@RaoCattlesServer_HostAddress = http://localhost:5104
+
+GET {{RaoCattlesServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
