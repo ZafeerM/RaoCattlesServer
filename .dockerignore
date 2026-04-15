@@ -1,0 +1,12 @@
+**/.git
+**/.gitignore
+**/.vs
+**/bin
+**/obj
+**/node_modules
+**/publish
+**/*.user
+**/*.md
+**/appsettings.Development.json
+Dockerfile
+.dockerignore

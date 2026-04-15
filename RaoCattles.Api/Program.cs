@@ -1,6 +1,7 @@
 using System.Text;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using RaoCattles.Api.Middleware;
@@ -13,7 +14,14 @@ using RaoCattles.Modules.Users.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── MongoDB ──────────────────────────────────────────────────────────────
+// -- Railway port binding ---
+var port = Environment.GetEnvironmentVariable("PORT");
+if (port is not null)
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
+// -- MongoDB -- ──────────────────────────────────────────────────────────────
 var mongoSettings = builder.Configuration.GetSection("MongoDB").Get<MongoSettings>()!;
 var mongoClient = new MongoClient(mongoSettings.ConnectionString);
 var mongoDatabase = mongoClient.GetDatabase(mongoSettings.DatabaseName);
@@ -79,14 +87,19 @@ var adminUsername = builder.Configuration["AdminSeed:Username"] ?? "Admin";
 var adminPassword = builder.Configuration["AdminSeed:Password"] ?? "raocattle0331";
 await AdminSeeder.SeedAsync(mongoDatabase, adminUsername, adminPassword);
 
-// ── Middleware pipeline ──────────────────────────────────────────────────
+// -- Middleware pipeline --------------------------------------------------
+app.UseExceptionHandler();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseHttpsRedirection();
 }
 
-app.UseExceptionHandler();
-app.UseHttpsRedirection();
 app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
