@@ -5,7 +5,7 @@ using RaoCattles.Modules.Products.Domain.Entities;
 
 namespace RaoCattles.Modules.Products.Application.Services;
 
-public class ProductService(IProductRepository repository) : IProductService
+public class ProductService(IProductRepository repository, IImageService imageService) : IProductService
 {
     public async Task<List<ProductResponse>> GetAllAsync(CancellationToken ct = default)
     {
@@ -32,8 +32,12 @@ public class ProductService(IProductRepository repository) : IProductService
             p.CreatedAt, p.UpdatedAt);
     }
 
-    public async Task<string> CreateAsync(string name, string breed, string description, int age, double weight, string color, int teeth, decimal price, string image1, string image2, string image3, CancellationToken ct = default)
+    public async Task<string> CreateAsync(string name, string breed, string description, int age, double weight, string color, int teeth, decimal price, ImageInput image1, ImageInput image2, ImageInput image3, CancellationToken ct = default)
     {
+        var publicId1 = await ProcessAndUploadAsync(image1, ct);
+        var publicId2 = await ProcessAndUploadAsync(image2, ct);
+        var publicId3 = await ProcessAndUploadAsync(image3, ct);
+
         var product = new Product
         {
             Name = name,
@@ -45,9 +49,9 @@ public class ProductService(IProductRepository repository) : IProductService
             Teeth = teeth,
             Price = price,
             Sold = false,
-            Image1 = image1,
-            Image2 = image2,
-            Image3 = image3,
+            Image1 = publicId1,
+            Image2 = publicId2,
+            Image3 = publicId3,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
@@ -56,7 +60,7 @@ public class ProductService(IProductRepository repository) : IProductService
         return product.Id;
     }
 
-    public async Task UpdateAsync(string id, string name, string breed, string description, int age, double weight, string color, int teeth, decimal price, bool sold, string image1, string image2, string image3, CancellationToken ct = default)
+    public async Task UpdateAsync(string id, string name, string breed, string description, int age, double weight, string color, int teeth, decimal price, bool sold, CancellationToken ct = default)
     {
         var product = await repository.GetByIdAsync(id, ct)
             ?? throw new NotFoundException($"Product with id '{id}' was not found.");
@@ -70,9 +74,6 @@ public class ProductService(IProductRepository repository) : IProductService
         product.Teeth = teeth;
         product.Price = price;
         product.Sold = sold;
-        product.Image1 = image1;
-        product.Image2 = image2;
-        product.Image3 = image3;
         product.UpdatedAt = DateTime.UtcNow;
 
         await repository.UpdateAsync(product, ct);
@@ -80,9 +81,19 @@ public class ProductService(IProductRepository repository) : IProductService
 
     public async Task DeleteAsync(string id, CancellationToken ct = default)
     {
-        _ = await repository.GetByIdAsync(id, ct)
+        var product = await repository.GetByIdAsync(id, ct)
             ?? throw new NotFoundException($"Product with id '{id}' was not found.");
 
+        await imageService.DeleteAsync(product.Image1, ct);
+        await imageService.DeleteAsync(product.Image2, ct);
+        await imageService.DeleteAsync(product.Image3, ct);
+
         await repository.DeleteAsync(id, ct);
+    }
+
+    private async Task<string> ProcessAndUploadAsync(ImageInput image, CancellationToken ct)
+    {
+        using var compressed = await imageService.CompressAsync(image.Stream, image.ContentType, image.Size, ct);
+        return await imageService.UploadAsync(compressed, image.FileName, ct);
     }
 }

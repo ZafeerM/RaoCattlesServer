@@ -9,7 +9,4 @@ public record UpdateProductRequest(
     string Color,
     int Teeth,
     decimal Price,
-    bool Sold,
-    string Image1,
-    string Image2,
-    string Image3);
+    bool Sold);

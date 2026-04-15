@@ -1,8 +1,10 @@
 using System.Text;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using RaoCattles.BuildingBlocks.Authentication;
+using RaoCattles.BuildingBlocks.Cloudinary;
 using RaoCattles.BuildingBlocks.Mongo;
 using RaoCattles.Modules.Products.Infrastructure;
 using RaoCattles.Modules.Users.Infrastructure;
@@ -15,6 +17,11 @@ var mongoSettings = builder.Configuration.GetSection("MongoDB").Get<MongoSetting
 var mongoClient = new MongoClient(mongoSettings.ConnectionString);
 var mongoDatabase = mongoClient.GetDatabase(mongoSettings.DatabaseName);
 builder.Services.AddSingleton<IMongoDatabase>(mongoDatabase);
+
+// ── Cloudinary ───────────────────────────────────────────────────────────
+var cloudinarySettings = builder.Configuration.GetSection("Cloudinary").Get<CloudinarySettings>()!;
+var cloudinaryAccount = new Account(cloudinarySettings.CloudName, cloudinarySettings.ApiKey, cloudinarySettings.ApiSecret);
+builder.Services.AddSingleton(new Cloudinary(cloudinaryAccount));
 
 // ── JWT Authentication ───────────────────────────────────────────────────
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>()!;
@@ -38,6 +45,18 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+// ── CORS ─────────────────────────────────────────────────────────
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 // ── Module registrations ─────────────────────────────────────────────────
 builder.Services.AddProductsModule();
 builder.Services.AddUsersModule(jwtSettings);
@@ -52,8 +71,8 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 // ── Seed admin user ──────────────────────────────────────────────────────
-var adminUsername = builder.Configuration["AdminSeed:Username"] ?? "admin";
-var adminPassword = builder.Configuration["AdminSeed:Password"] ?? "admin";
+var adminUsername = builder.Configuration["AdminSeed:Username"] ?? "Admin";
+var adminPassword = builder.Configuration["AdminSeed:Password"] ?? "raocattle0331";
 await AdminSeeder.SeedAsync(mongoDatabase, adminUsername, adminPassword);
 
 // ── Middleware pipeline ──────────────────────────────────────────────────
@@ -63,6 +82,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
