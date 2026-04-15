@@ -23,6 +23,12 @@ if (port is not null)
 
 // -- MongoDB -- ──────────────────────────────────────────────────────────────
 var mongoSettings = builder.Configuration.GetSection("MongoDB").Get<MongoSettings>()!;
+
+if (string.IsNullOrWhiteSpace(mongoSettings.ConnectionString))
+    throw new InvalidOperationException(
+        "MongoDB:ConnectionString is not configured. " +
+        "Set the MongoDB__ConnectionString environment variable.");
+
 var mongoClient = new MongoClient(mongoSettings.ConnectionString);
 var mongoDatabase = mongoClient.GetDatabase(mongoSettings.DatabaseName);
 builder.Services.AddSingleton<IMongoDatabase>(mongoDatabase);
