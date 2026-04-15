@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RaoCattles.Modules.Products.Domain\RaoCattles.Modules.Products.Domain.csproj" />
+    <ProjectReference Include="..\..\..\RaoCattles.BuildingBlocks\RaoCattles.BuildingBlocks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\CreateProduct\" />
+    <Folder Include="Commands\DeleteProduct\" />
+    <Folder Include="Commands\UpdateProduct\" />
+    <Folder Include="Queries\GetAllProducts\" />
+    <Folder Include="Queries\GetProductById\" />
+  </ItemGroup>
+
+</Project>

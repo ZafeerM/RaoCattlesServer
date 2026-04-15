@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RaoCattles.Modules.Products.Application\RaoCattles.Modules.Products.Application.csproj" />
+    <ProjectReference Include="..\RaoCattles.Modules.Products.Domain\RaoCattles.Modules.Products.Domain.csproj" />
+    <ProjectReference Include="..\..\..\RaoCattles.BuildingBlocks\RaoCattles.BuildingBlocks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="3.7.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+</Project>

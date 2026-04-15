@@ -7,7 +7,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="obj\Debug\net10.0\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs" />
+    <Compile Include="obj\Debug\net10.0\RaoCattlesServer.AssemblyInfo.cs" />
+    <Compile Include="obj\Debug\net10.0\RaoCattlesServer.GlobalUsings.g.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="obj\Debug\net10.0\rpswa.dswa.cache.json" />
+    <Content Include="obj\Debug\net10.0\staticwebassets.removed.txt" />
+    <Content Include="obj\project.assets.json" />
+    <Content Include="obj\RaoCattlesServer.csproj.nuget.dgspec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="bin\Debug\net10.0\" />
+    <Folder Include="obj\Debug\net10.0\refint\" />
+    <Folder Include="obj\Debug\net10.0\ref\" />
+    <Folder Include="obj\Debug\net10.0\staticwebassets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="obj\Debug\net10.0\RaoCattlesServer.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\net10.0\RaoCattlesServer.assets.cache" />
+    <None Include="obj\Debug\net10.0\RaoCattlesServer.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\net10.0\RaoCattlesServer.GeneratedMSBuildEditorConfig.editorconfig" />
+    <None Include="obj\project.nuget.cache" />
+    <None Include="obj\RaoCattlesServer.csproj.nuget.g.props" />
+    <None Include="obj\RaoCattlesServer.csproj.nuget.g.targets" />
   </ItemGroup>
 
 </Project>

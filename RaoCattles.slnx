@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/Products/">
+    <Project Path="Modules/Products/RaoCattles.Modules.Products.Application/RaoCattles.Modules.Products.Application.csproj" />
+    <Project Path="Modules/Products/RaoCattles.Modules.Products.Domain/RaoCattles.Modules.Products.Domain.csproj" />
+    <Project Path="Modules/Products/RaoCattles.Modules.Products.Infrastructure/RaoCattles.Modules.Products.Infrastructure.csproj" />
+    <Project Path="Modules/Products/RaoCattles.Modules.Products.Presentation/RaoCattles.Modules.Products.Presentation.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Users/">
+    <Project Path="Modules/Users/RaoCattles.Modules.Users.Application/RaoCattles.Modules.Users.Application.csproj" />
+    <Project Path="Modules/Users/RaoCattles.Modules.Users.Domain/RaoCattles.Modules.Users.Domain.csproj" />
+    <Project Path="Modules/Users/RaoCattles.Modules.Users.Infrastructure/RaoCattles.Modules.Users.Infrastructure.csproj" />
+    <Project Path="Modules/Users/RaoCattles.Modules.Users.Presentation/RaoCattles.Modules.Users.Presentation.csproj" />
+  </Folder>
+  <Project Path="RaoCattles.Api/RaoCattles.Api.csproj" />
+  <Project Path="RaoCattles.BuildingBlocks/RaoCattles.BuildingBlocks.csproj" />
+</Solution>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RaoCattles.BuildingBlocks\RaoCattles.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\Modules\Products\RaoCattles.Modules.Products.Infrastructure\RaoCattles.Modules.Products.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Products\RaoCattles.Modules.Products.Presentation\RaoCattles.Modules.Products.Presentation.csproj" />
+    <ProjectReference Include="..\Modules\Users\RaoCattles.Modules.Users.Infrastructure\RaoCattles.Modules.Users.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Users\RaoCattles.Modules.Users.Presentation\RaoCattles.Modules.Users.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
+    <PackageReference Include="MongoDB.Driver" Version="3.7.1" />
+  </ItemGroup>
+
+</Project>
